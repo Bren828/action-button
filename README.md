@@ -1,5 +1,9 @@
 # action-button
 
+Action button to confirm for SAMP
+
+Подтверждение действий по нажатию кнопки.\
+Для подтверждения нажмите Y или для отмены N
 
 ## Reference
 * [Installation](https://github.com/Bren828/action-button#installation)
