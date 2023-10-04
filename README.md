@@ -59,10 +59,12 @@ ActionButton:give_flowers(playerid, inviteid, response)
 > * `dialog_caption[]` - **Use dialog.** The title at the top of the dialog
 > * `dialog_button1[]` - Dialog button 1
 > * `dialog_button2[]` - Dialog button 2
+> * Returns (0) on failure or (1) on success
 
 #### CancelActionButton(playerid)
 > Cancel invitation
 > * `playerid` - The ID of the player
+> * Returns (0) on failure or (1) on success
 
 #### GetActionButtonInviteid(playerid)
 > Get invited player ID
