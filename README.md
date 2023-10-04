@@ -69,6 +69,12 @@ ActionButton:give_flowers(playerid, inviteid, response)
 > * `playerid` - The ID of the player
 > * Returns (`INVALID_PLAYER_ID`) on failure or (`ID`) on success
 
+#### SetActionButtonTime(playerid, time)
+> Set timeout time
+> * `playerid` - The ID of the player
+> * `time` - Time
+> * Returns The time in seconds
+
 #### GetActionButtonTime(playerid)
 > Get timeout time
 > * `playerid` - The ID of the player
@@ -88,7 +94,7 @@ ActionButton:give_flowers(playerid, inviteid, response)
 ## Definition
 
 ```pawn
-#define AB_INVITATION_TIME   30
+#define AB_INVITE_TIMEOUT_TIME   30
 #define AB_MAX_DISTANCE   3.0
 #define AB_DIALOG_ID   16743		
 #define AB_COLOR_MESSAGE   0xFFFFFFAA
