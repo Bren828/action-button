@@ -73,7 +73,6 @@ ActionButton:give_flowers(playerid, inviteid, response)
 > Set timeout time
 > * `playerid` - The ID of the player
 > * `time` - Time
-> * Returns The time in seconds
 
 #### GetActionButtonTime(playerid)
 > Get timeout time
