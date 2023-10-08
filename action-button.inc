@@ -5,9 +5,9 @@
 *   ---------------------------------------------------
 *
 *	Creater - @Bren828 					
-*									4 October 2023
+*									7 October 2023
 *
-*   Version: 1.0
+*   Version: 1.01
 *
 *   ---------------------------------------------------
 *
@@ -83,51 +83,51 @@
 
 
 #if !defined AB_TEXT_INFO
-	static AB_TEXT_INFO[] = "Для подтверждения нажмите {33AA33}~k~~CONVERSATION_YES~ {269BD8}или для отмены {FF0000}~k~~CONVERSATION_NO~";
+	#define AB_TEXT_INFO "Для подтверждения нажмите {33AA33}~k~~CONVERSATION_YES~ {269BD8}или для отмены {FF0000}~k~~CONVERSATION_NO~"
 #endif
 
 #if !defined AB_TEXT_ACTIVE_INVITE
-	static AB_TEXT_ACTIVE_INVITE[] = "У вас есть активное предложение, повторите попытку через несколько секунд.";
+	#define AB_TEXT_ACTIVE_INVITE "У вас есть активное предложение, повторите попытку через несколько секунд."
 #endif
 
 #if !defined AB_TEXT_ACTIVE_INVITE2
-	static AB_TEXT_ACTIVE_INVITE2[] = "Вы уже отправили предложение, повторите попытку через несколько секунд.";
+	#define AB_TEXT_ACTIVE_INVITE2 "Вы уже отправили предложение, повторите попытку через несколько секунд."
 #endif
 
 #if !defined AB_TEXT_ALREADY_INVITED
-	static AB_TEXT_ALREADY_INVITED[] = "Игроку уже что-то предложили.";
+	#define AB_TEXT_ALREADY_INVITED "Игроку уже что-то предложили."
 #endif
 
 #if !defined AB_TEXT_INVALID_ID
-	static AB_TEXT_INVALID_ID[] = "Игрок не найден";
+	#define AB_TEXT_INVALID_ID "Игрок не найден"
 #endif
 
 #if !defined AB_TEXT_INVALID_STATE
-	static AB_TEXT_INVALID_STATE[] = "Игрок в данный момент не активен";
+	#define AB_TEXT_INVALID_STATE "Игрок в данный момент не активен"
 #endif
 
 #if !defined AB_TEXT_INVALID_DISTANCE
-	static AB_TEXT_INVALID_DISTANCE[] = "Игрок далеко от вас";
+	#define AB_TEXT_INVALID_DISTANCE "Игрок далеко от вас"
 #endif
 
 #if !defined AB_TEXT_TIME_OVER
-	static AB_TEXT_TIME_OVER[] = "Время подтверждения вышло";
+	#define AB_TEXT_TIME_OVER "Время подтверждения вышло"
 #endif
 
 #if !defined AB_TEXT_ACCEPTED
-	static AB_TEXT_ACCEPTED[] = "Вы приняли предложение %s";
+	#define AB_TEXT_ACCEPTED "Вы приняли предложение %s"
 #endif
 
 #if !defined AB_TEXT_ACCEPTED_BY_PLAYER
-	static AB_TEXT_ACCEPTED_BY_PLAYER[] = "Игрок %s принял ваше предложение";
+	#define AB_TEXT_ACCEPTED_BY_PLAYER "Игрок %s принял ваше предложение"
 #endif
 
 #if !defined AB_TEXT_DECLINE
-	static AB_TEXT_DECLINE[] = "Вы отказались от предложения %s";
+	#define AB_TEXT_DECLINE "Вы отказались от предложения %s"
 #endif
 
 #if !defined AB_TEXT_DECLINE_BY_PLAYER
-	static AB_TEXT_DECLINE_BY_PLAYER[] = "Игрок %s отказался от вашего предложения";
+	#define AB_TEXT_DECLINE_BY_PLAYER "Игрок %s отказался от вашего предложения"
 #endif
 
 
@@ -182,10 +182,13 @@ stock CreateActionButton(const function[], playerid, inviteid, const text_creato
     	return 0;
 	}
 
-	new Float:Pos[3];
-    GetPlayerPos(inviteid, Pos[0], Pos[1], Pos[2]);
+	new Float:x, 
+		Float:y,
+		Float:z;
 
-    if(!IsPlayerInRangeOfPoint(playerid, action_button[playerid][ab_Distance], Pos[0], Pos[1], Pos[2]) || 
+    GetPlayerPos(inviteid, x, y, z);
+
+    if(!IsPlayerInRangeOfPoint(playerid, action_button[playerid][ab_Distance], x, y, z) || 
 		GetPlayerInterior(playerid) != GetPlayerInterior(inviteid) || 
 		GetPlayerVirtualWorld(playerid) != GetPlayerVirtualWorld(inviteid)
 	) 
