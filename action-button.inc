@@ -83,51 +83,51 @@
 
 
 #if !defined AB_TEXT_INFO
-	#define AB_TEXT_INFO "Для подтверждения нажмите {33AA33}~k~~CONVERSATION_YES~ {269BD8}или для отмены {FF0000}~k~~CONVERSATION_NO~"
+	#define AB_TEXT_INFO "Р”Р»СЏ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ РЅР°Р¶РјРёС‚Рµ {33AA33}~k~~CONVERSATION_YES~ {269BD8}РёР»Рё РґР»СЏ РѕС‚РјРµРЅС‹ {FF0000}~k~~CONVERSATION_NO~"
 #endif
 
 #if !defined AB_TEXT_ACTIVE_INVITE
-	#define AB_TEXT_ACTIVE_INVITE "У вас есть активное предложение, повторите попытку через несколько секунд."
+	#define AB_TEXT_ACTIVE_INVITE "РЈ РІР°СЃ РµСЃС‚СЊ Р°РєС‚РёРІРЅРѕРµ РїСЂРµРґР»РѕР¶РµРЅРёРµ, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ С‡РµСЂРµР· РЅРµСЃРєРѕР»СЊРєРѕ СЃРµРєСѓРЅРґ."
 #endif
 
 #if !defined AB_TEXT_ACTIVE_INVITE2
-	#define AB_TEXT_ACTIVE_INVITE2 "Вы уже отправили предложение, повторите попытку через несколько секунд."
+	#define AB_TEXT_ACTIVE_INVITE2 "Р’С‹ СѓР¶Рµ РѕС‚РїСЂР°РІРёР»Рё РїСЂРµРґР»РѕР¶РµРЅРёРµ, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ С‡РµСЂРµР· РЅРµСЃРєРѕР»СЊРєРѕ СЃРµРєСѓРЅРґ."
 #endif
 
 #if !defined AB_TEXT_ALREADY_INVITED
-	#define AB_TEXT_ALREADY_INVITED "Игроку уже что-то предложили."
+	#define AB_TEXT_ALREADY_INVITED "РРіСЂРѕРєСѓ СѓР¶Рµ С‡С‚Рѕ-С‚Рѕ РїСЂРµРґР»РѕР¶РёР»Рё."
 #endif
 
 #if !defined AB_TEXT_INVALID_ID
-	#define AB_TEXT_INVALID_ID "Игрок не найден"
+	#define AB_TEXT_INVALID_ID "РРіСЂРѕРє РЅРµ РЅР°Р№РґРµРЅ"
 #endif
 
 #if !defined AB_TEXT_INVALID_STATE
-	#define AB_TEXT_INVALID_STATE "Игрок в данный момент не активен"
+	#define AB_TEXT_INVALID_STATE "РРіСЂРѕРє РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµ Р°РєС‚РёРІРµРЅ"
 #endif
 
 #if !defined AB_TEXT_INVALID_DISTANCE
-	#define AB_TEXT_INVALID_DISTANCE "Игрок далеко от вас"
+	#define AB_TEXT_INVALID_DISTANCE "РРіСЂРѕРє РґР°Р»РµРєРѕ РѕС‚ РІР°СЃ"
 #endif
 
 #if !defined AB_TEXT_TIME_OVER
-	#define AB_TEXT_TIME_OVER "Время подтверждения вышло"
+	#define AB_TEXT_TIME_OVER "Р’СЂРµРјСЏ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ РІС‹С€Р»Рѕ"
 #endif
 
 #if !defined AB_TEXT_ACCEPTED
-	#define AB_TEXT_ACCEPTED "Вы приняли предложение %s"
+	#define AB_TEXT_ACCEPTED "Р’С‹ РїСЂРёРЅСЏР»Рё РїСЂРµРґР»РѕР¶РµРЅРёРµ %s"
 #endif
 
 #if !defined AB_TEXT_ACCEPTED_BY_PLAYER
-	#define AB_TEXT_ACCEPTED_BY_PLAYER "Игрок %s принял ваше предложение"
+	#define AB_TEXT_ACCEPTED_BY_PLAYER "РРіСЂРѕРє %s РїСЂРёРЅСЏР» РІР°С€Рµ РїСЂРµРґР»РѕР¶РµРЅРёРµ"
 #endif
 
 #if !defined AB_TEXT_DECLINE
-	#define AB_TEXT_DECLINE "Вы отказались от предложения %s"
+	#define AB_TEXT_DECLINE "Р’С‹ РѕС‚РєР°Р·Р°Р»РёСЃСЊ РѕС‚ РїСЂРµРґР»РѕР¶РµРЅРёСЏ %s"
 #endif
 
 #if !defined AB_TEXT_DECLINE_BY_PLAYER
-	#define AB_TEXT_DECLINE_BY_PLAYER "Игрок %s отказался от вашего предложения"
+	#define AB_TEXT_DECLINE_BY_PLAYER "РРіСЂРѕРє %s РѕС‚РєР°Р·Р°Р»СЃСЏ РѕС‚ РІР°С€РµРіРѕ РїСЂРµРґР»РѕР¶РµРЅРёСЏ"
 #endif
 
 
