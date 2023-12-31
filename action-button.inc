@@ -17,7 +17,7 @@
 *
 *
 * Create action button
-*    	CreateActionButton(const function[], playerid, inviteid, const text_creator[] = "", const text_invited[] = "", accept_button = KEY_YES, decline_button = KEY_NO, const dialog_caption[] = "", const dialog_button1[] = "", const dialog_button2[] = "")
+*    	CreateActionButton(const function[], playerid, inviteid, text_creator[] = "", text_invited[] = "", accept_button = KEY_YES, decline_button = KEY_NO, dialog_caption[] = "", dialog_button1[] = "", dialog_button2[] = "")
 *    	Returns (0) on failure or (1) on success
 *
 *   
@@ -83,51 +83,51 @@
 
 
 #if !defined AB_TEXT_INFO
-	#define AB_TEXT_INFO "Ğ”Ğ»Ñ Ğ¿Ğ¾Ğ´Ñ‚Ğ²ĞµÑ€Ğ¶Ğ´ĞµĞ½Ğ¸Ñ Ğ½Ğ°Ğ¶Ğ¼Ğ¸Ñ‚Ğµ {33AA33}~k~~CONVERSATION_YES~ {269BD8}Ğ¸Ğ»Ğ¸ Ğ´Ğ»Ñ Ğ¾Ñ‚Ğ¼ĞµĞ½Ñ‹ {FF0000}~k~~CONVERSATION_NO~"
+	#define AB_TEXT_INFO "Äëÿ ïîäòâåğæäåíèÿ íàæìèòå {33AA33}~k~~CONVERSATION_YES~ {269BD8}èëè äëÿ îòìåíû {FF0000}~k~~CONVERSATION_NO~"
 #endif
 
 #if !defined AB_TEXT_ACTIVE_INVITE
-	#define AB_TEXT_ACTIVE_INVITE "Ğ£ Ğ²Ğ°Ñ ĞµÑÑ‚ÑŒ Ğ°ĞºÑ‚Ğ¸Ğ²Ğ½Ğ¾Ğµ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ, Ğ¿Ğ¾Ğ²Ñ‚Ğ¾Ñ€Ğ¸Ñ‚Ğµ Ğ¿Ğ¾Ğ¿Ñ‹Ñ‚ĞºÑƒ Ñ‡ĞµÑ€ĞµĞ· Ğ½ĞµÑĞºĞ¾Ğ»ÑŒĞºĞ¾ ÑĞµĞºÑƒĞ½Ğ´."
+	#define AB_TEXT_ACTIVE_INVITE "Ó âàñ åñòü àêòèâíîå ïğåäëîæåíèå, ïîâòîğèòå ïîïûòêó ÷åğåç íåñêîëüêî ñåêóíä."
 #endif
 
 #if !defined AB_TEXT_ACTIVE_INVITE2
-	#define AB_TEXT_ACTIVE_INVITE2 "Ğ’Ñ‹ ÑƒĞ¶Ğµ Ğ¾Ñ‚Ğ¿Ñ€Ğ°Ğ²Ğ¸Ğ»Ğ¸ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ, Ğ¿Ğ¾Ğ²Ñ‚Ğ¾Ñ€Ğ¸Ñ‚Ğµ Ğ¿Ğ¾Ğ¿Ñ‹Ñ‚ĞºÑƒ Ñ‡ĞµÑ€ĞµĞ· Ğ½ĞµÑĞºĞ¾Ğ»ÑŒĞºĞ¾ ÑĞµĞºÑƒĞ½Ğ´."
+	#define AB_TEXT_ACTIVE_INVITE2 "Âû óæå îòïğàâèëè ïğåäëîæåíèå, ïîâòîğèòå ïîïûòêó ÷åğåç íåñêîëüêî ñåêóíä."
 #endif
 
 #if !defined AB_TEXT_ALREADY_INVITED
-	#define AB_TEXT_ALREADY_INVITED "Ğ˜Ğ³Ñ€Ğ¾ĞºÑƒ ÑƒĞ¶Ğµ Ñ‡Ñ‚Ğ¾-Ñ‚Ğ¾ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶Ğ¸Ğ»Ğ¸."
+	#define AB_TEXT_ALREADY_INVITED "Èãğîêó óæå ÷òî-òî ïğåäëîæèëè."
 #endif
 
 #if !defined AB_TEXT_INVALID_ID
-	#define AB_TEXT_INVALID_ID "Ğ˜Ğ³Ñ€Ğ¾Ğº Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½"
+	#define AB_TEXT_INVALID_ID "Èãğîê íå íàéäåí"
 #endif
 
 #if !defined AB_TEXT_INVALID_STATE
-	#define AB_TEXT_INVALID_STATE "Ğ˜Ğ³Ñ€Ğ¾Ğº Ğ² Ğ´Ğ°Ğ½Ğ½Ñ‹Ğ¹ Ğ¼Ğ¾Ğ¼ĞµĞ½Ñ‚ Ğ½Ğµ Ğ°ĞºÑ‚Ğ¸Ğ²ĞµĞ½"
+	#define AB_TEXT_INVALID_STATE "Èãğîê â äàííûé ìîìåíò íå àêòèâåí"
 #endif
 
 #if !defined AB_TEXT_INVALID_DISTANCE
-	#define AB_TEXT_INVALID_DISTANCE "Ğ˜Ğ³Ñ€Ğ¾Ğº Ğ´Ğ°Ğ»ĞµĞºĞ¾ Ğ¾Ñ‚ Ğ²Ğ°Ñ"
+	#define AB_TEXT_INVALID_DISTANCE "Èãğîê äàëåêî îò âàñ"
 #endif
 
 #if !defined AB_TEXT_TIME_OVER
-	#define AB_TEXT_TIME_OVER "Ğ’Ñ€ĞµĞ¼Ñ Ğ¿Ğ¾Ğ´Ñ‚Ğ²ĞµÑ€Ğ¶Ğ´ĞµĞ½Ğ¸Ñ Ğ²Ñ‹ÑˆĞ»Ğ¾"
+	#define AB_TEXT_TIME_OVER "Âğåìÿ ïîäòâåğæäåíèÿ âûøëî"
 #endif
 
 #if !defined AB_TEXT_ACCEPTED
-	#define AB_TEXT_ACCEPTED "Ğ’Ñ‹ Ğ¿Ñ€Ğ¸Ğ½ÑĞ»Ğ¸ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ %s"
+	#define AB_TEXT_ACCEPTED "Âû ïğèíÿëè ïğåäëîæåíèå %s"
 #endif
 
 #if !defined AB_TEXT_ACCEPTED_BY_PLAYER
-	#define AB_TEXT_ACCEPTED_BY_PLAYER "Ğ˜Ğ³Ñ€Ğ¾Ğº %s Ğ¿Ñ€Ğ¸Ğ½ÑĞ» Ğ²Ğ°ÑˆĞµ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ"
+	#define AB_TEXT_ACCEPTED_BY_PLAYER "Èãğîê %s ïğèíÿë âàøå ïğåäëîæåíèå"
 #endif
 
 #if !defined AB_TEXT_DECLINE
-	#define AB_TEXT_DECLINE "Ğ’Ñ‹ Ğ¾Ñ‚ĞºĞ°Ğ·Ğ°Ğ»Ğ¸ÑÑŒ Ğ¾Ñ‚ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ %s"
+	#define AB_TEXT_DECLINE "Âû îòêàçàëèñü îò ïğåäëîæåíèÿ %s"
 #endif
 
 #if !defined AB_TEXT_DECLINE_BY_PLAYER
-	#define AB_TEXT_DECLINE_BY_PLAYER "Ğ˜Ğ³Ñ€Ğ¾Ğº %s Ğ¾Ñ‚ĞºĞ°Ğ·Ğ°Ğ»ÑÑ Ğ¾Ñ‚ Ğ²Ğ°ÑˆĞµĞ³Ğ¾ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ"
+	#define AB_TEXT_DECLINE_BY_PLAYER "Èãğîê %s îòêàçàëñÿ îò âàøåãî ïğåäëîæåíèÿ"
 #endif
 
 
@@ -154,7 +154,7 @@ static action_button[MAX_PLAYERS][ACTION_BUTTON_EN];
 
 
 
-stock CreateActionButton(const function[], playerid, inviteid, const text_creator[] = "", const text_invited[] = "", accept_button = KEY_YES, decline_button = KEY_NO, const dialog_caption[] = "", const dialog_button1[] = "", const dialog_button2[] = "")
+stock CreateActionButton(const function[], playerid, inviteid, text_creator[] = "", text_invited[] = "", accept_button = KEY_YES, decline_button = KEY_NO, dialog_caption[] = "", dialog_button1[] = "", dialog_button2[] = "")
 {
 	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID && action_button[playerid][ab_Time] >= gettime())
 	{
