@@ -31,7 +31,7 @@ CMD:test(playerid, params[])
     if(!IsPlayerConnected(inviteid)) 
         return SendClientMessage(playerid,-1, "INVALID");
 
-    CreateActionButton("give_flowers", playerid, inviteid, "", "", KEY_YES, KEY_NO);
+    CreateActionButton("give_flowers", playerid, inviteid, "You offered flowers", "You were offered flowers", KEY_YES, KEY_NO);
 
     return 1;
 }
@@ -47,7 +47,7 @@ ActionButton:give_flowers(playerid, inviteid, response)
 
 ## Functions
 
-#### CreateActionButton(const function[], playerid, inviteid, const text_creator[] = "", const text_invited[] = "", accept_button = KEY_YES, decline_button = KEY_NO, const dialog_caption[] = "", const dialog_button1[] = "", const dialog_button2[] = "")
+#### CreateActionButton(const function[], playerid, inviteid, text_creator[] = "", text_invited[] = "", accept_button = KEY_YES, decline_button = KEY_NO, dialog_caption[] = "", dialog_button1[] = "", dialog_button2[] = "")
 > Create action button
 > * `function[]` - Function name
 > * `playerid` - The ID of the player
