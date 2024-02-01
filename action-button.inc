@@ -5,9 +5,9 @@
 *   ---------------------------------------------------
 *
 *	Creater - @Bren828 					
-*									7 October 2023
+*									1 February 2024
 *
-*   Version: 1.01
+*   Version: 1.1
 *
 *   ---------------------------------------------------
 *
@@ -208,6 +208,8 @@ stock CreateActionButton(const function[], playerid, inviteid, text_creator[] = 
 
 	format(action_button[inviteid][ab_Function], 32, "ab_%s", function);
 
+	if(accept_button == decline_button) decline_button ++;
+
 	action_button[inviteid][ab_AcceptButton] = accept_button;
 	action_button[inviteid][ab_DeclineButton] = decline_button;
 
@@ -219,7 +221,7 @@ stock CreateActionButton(const function[], playerid, inviteid, text_creator[] = 
 		#if defined _mdialog_included
 			Dialog_Open(inviteid, Dialog:_Button_Action_Dialog, DIALOG_STYLE_MSGBOX, dialog_caption, text_invited, dialog_button1, dialog_button2);
 		#else 
-			ShowPlayerDialog(playerid, AB_DIALOG_ID, DIALOG_STYLE_MSGBOX, dialog_caption, text_invited, dialog_button1, dialog_button2);
+			ShowPlayerDialog(inviteid, AB_DIALOG_ID, DIALOG_STYLE_MSGBOX, dialog_caption, text_invited, dialog_button1, dialog_button2);
 		#endif
 		return 1;
 	}
