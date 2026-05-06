@@ -3,10 +3,9 @@
 Library for creating interactive player-to-player action confirmation systems.
 It allows you to implement custom actions that require another player's consent via key presses or dialog responses within a defined timeout and distance.
 
-Библиотека предназначенная для создания интерактивных систем подтверждения действий между игроками.
-Позволяет реализовать пользовательские действия, требующие согласия другого игрока посредством нажатия клавиш или ответов в диалоговом окне в пределах заданного таймаута и расстояния.
-
-> **Note:** [mdialog](https://github.com/Open-GTO/mdialog) If included, it will be automatically used for dialogs. 
+Библиотека предназначенная для создания систем подтверждения действий между игроками.
+Позволяет реализовать пользовательские действия, требующие согласия другого игрока посредством нажатия клавиш или ответов в диалоговом окне в пределах заданного таймаута и расстояния.\
+**Для подтверждения нажмите Y или для отмены N**
 
 ## Reference
 * [Installation](#installation)
@@ -20,6 +19,7 @@ Include in your code and begin using the library:
 ```pawn
 #include <action-button>
 ```
+> **Note:** [mdialog](https://github.com/Open-GTO/mdialog) If included, it will be automatically used for dialogs. 
 
 ## Example
 ```pawn
