@@ -4,48 +4,15 @@
 *
 *   ---------------------------------------------------
 *
-*	Creater - @Bren828 					
-*									1 February 2024
+*	Created by Bren828					
+*									6 May 2026
 *
-*   Version: 1.1
+*   Version: 1.2
 *
 *   ---------------------------------------------------
 *
 *
 *	https://github.com/Bren828/action-button
-*
-*
-*
-* Create action button
-*    	CreateActionButton(const function[], playerid, inviteid, text_creator[] = "", text_invited[] = "", accept_button = KEY_YES, decline_button = KEY_NO, dialog_caption[] = "", dialog_button1[] = "", dialog_button2[] = "")
-*    	Returns (0) on failure or (1) on success
-*
-*   
-* Cancel invitation
-*		CancelActionButton(playerid)
-*    	Returns (0) on failure or (1) on success
-*
-*   
-* Get invited player ID
-*		GetActionButtonInviteid(playerid)
-*    	Returns (INVALID_PLAYER_ID) on failure or (ID) on success
-*
-*   
-* Set the distance to the player
-*		SetActionButtonTime(playerid, time)
-*
-*   
-* Get timeout time
-*		GetActionButtonTime(playerid)
-*    	Returns: The time in seconds
-*
-*   
-* Allow to invite yourself
-*		SetActionButtonInviteYourself(playerid, bool:enable)
-*
-*   
-* Set the distance to the player
-*		SetActionButtonDistance(playerid, Float:distance)
 *
 *
 */
@@ -56,42 +23,42 @@
 #define _action_button_included
 
 
-#if !defined AB_INVITE_TIMEOUT_TIME
-	#define AB_INVITE_TIMEOUT_TIME 		30
+#if !defined AB_DEFAULT_TIMEOUT
+	#define AB_DEFAULT_TIMEOUT 30
 #endif
 
 #if !defined AB_MAX_DISTANCE
-	#define AB_MAX_DISTANCE 			3.0
+	#define AB_MAX_DISTANCE 3.0
 #endif
 
 #if !defined AB_DIALOG_ID
-	#define AB_DIALOG_ID 				16743		
+	#define AB_DIALOG_ID 16743		
 #endif
 
 
-#if !defined AB_COLOR_MESSAGE
-	#define AB_COLOR_MESSAGE      		0xFFFFFFAA
+#if !defined AB_MESSAGE_COLOR
+	#define AB_MESSAGE_COLOR 0xFFFFFFAA
 #endif
 
-#if !defined AB_COLOR_MESSAGE_INFO
-	#define AB_COLOR_MESSAGE_INFO      	0x269BD8AA
+#if !defined AB_HELP_MESSAGE_COLOR
+	#define AB_HELP_MESSAGE_COLOR 0x269BD8AA
 #endif
 
-#if !defined AB_COLOR_ERROR_MESSAGE
-	#define AB_COLOR_ERROR_MESSAGE      0xAFAFAFAA
+#if !defined AB_ERROR_MESSAGE_COLOR
+	#define AB_ERROR_MESSAGE_COLOR 0xAFAFAFAA
 #endif
 
 
-#if !defined AB_TEXT_INFO
-	#define AB_TEXT_INFO "Для подтверждения нажмите {33AA33}~k~~CONVERSATION_YES~ {269BD8}или для отмены {FF0000}~k~~CONVERSATION_NO~"
+#if !defined AB_TEXT_KEY_HELP
+	#define AB_TEXT_KEY_HELP "Для подтверждения нажмите {33AA33}~k~~CONVERSATION_YES~ {269BD8}или для отмены {FF0000}~k~~CONVERSATION_NO~"
 #endif
 
-#if !defined AB_TEXT_ACTIVE_INVITE
-	#define AB_TEXT_ACTIVE_INVITE "У вас есть активное предложение, повторите попытку через несколько секунд."
+#if !defined AB_TEXT_PENDING_INCOMING
+	#define AB_TEXT_PENDING_INCOMING "У вас есть активное предложение, повторите попытку через несколько секунд."
 #endif
 
-#if !defined AB_TEXT_ACTIVE_INVITE2
-	#define AB_TEXT_ACTIVE_INVITE2 "Вы уже отправили предложение, повторите попытку через несколько секунд."
+#if !defined AB_TEXT_PENDING_OUTGOING
+	#define AB_TEXT_PENDING_OUTGOING "Вы уже отправили предложение, повторите попытку через несколько секунд."
 #endif
 
 #if !defined AB_TEXT_ALREADY_INVITED
@@ -110,8 +77,8 @@
 	#define AB_TEXT_INVALID_DISTANCE "Игрок далеко от вас"
 #endif
 
-#if !defined AB_TEXT_TIME_OVER
-	#define AB_TEXT_TIME_OVER "Время подтверждения вышло"
+#if !defined AB_TEXT_TIMEOUT
+	#define AB_TEXT_TIMEOUT "Время подтверждения вышло"
 #endif
 
 #if !defined AB_TEXT_ACCEPTED
@@ -122,63 +89,64 @@
 	#define AB_TEXT_ACCEPTED_BY_PLAYER "Игрок %s принял ваше предложение"
 #endif
 
-#if !defined AB_TEXT_DECLINE
-	#define AB_TEXT_DECLINE "Вы отказались от предложения %s"
+#if !defined AB_TEXT_DECLINED
+	#define AB_TEXT_DECLINED "Вы отказались от предложения %s"
 #endif
 
-#if !defined AB_TEXT_DECLINE_BY_PLAYER
-	#define AB_TEXT_DECLINE_BY_PLAYER "Игрок %s отказался от вашего предложения"
+#if !defined AB_TEXT_DECLINED_BY_PLAYER
+	#define AB_TEXT_DECLINED_BY_PLAYER "Игрок %s отказался от вашего предложения"
 #endif
 
 
-#define ActionButton:%0(%1) forward ab_%0(%1); public ab_%0(%1)
+#define ActionButton:%0(%1) \ 
+	forward ab_%0(%1); \ 
+	public ab_%0(%1)
 
 #define AB ActionButton
 #define PressButton ActionButton
 
 
-enum ACTION_BUTTON_EN
-{
-	bool:ab_Creator,
-	bool:ab_Invited,
+enum E_ACTION_BUTTON {
+	bool:ab_IsCreator,
+	bool:ab_IsInvited,
 	ab_InviteID,
-	ab_Time,
+	ab_ExpireTime,
 	ab_Function[32],
-	bool:ab_EnableInvitingYourself,
-	Float:ab_Distance,
-	ab_AcceptButton,
-	ab_DeclineButton,
-	ab_TimeTimeout
+	bool:ab_SelfInvite,
+	Float:ab_MaxDistance,
+	ab_KeyAccept,
+	ab_KeyDecline,
+	ab_Timeout
 }
-static action_button[MAX_PLAYERS][ACTION_BUTTON_EN];
+
+static action_button[MAX_PLAYERS][E_ACTION_BUTTON];
 
 
 
-stock CreateActionButton(const function[], playerid, inviteid, text_creator[] = "", text_invited[] = "", accept_button = KEY_YES, decline_button = KEY_NO, dialog_caption[] = "", dialog_button1[] = "", dialog_button2[] = "")
-{
-	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID && action_button[playerid][ab_Time] >= gettime())
-	{
-		if(action_button[playerid][ab_Invited] == true) SendClientMessage(playerid, AB_COLOR_ERROR_MESSAGE, AB_TEXT_ACTIVE_INVITE);
-		else SendClientMessage(playerid, AB_COLOR_ERROR_MESSAGE, AB_TEXT_ACTIVE_INVITE2);
-		
+stock CreateActionButton(const function[], playerid, inviteid, const messageCreator[] = "", const messageInvited[] = "", keyAccept = KEY_YES, keyDecline = KEY_NO, const dialogCaption[] = "", const dialogButton1[] = "", const dialogButton2[] = "") {
+
+	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID && action_button[playerid][ab_ExpireTime] >= gettime()) {
+		if(action_button[playerid][ab_IsInvited]) {
+			SendClientMessage(playerid, AB_ERROR_MESSAGE_COLOR, AB_TEXT_PENDING_INCOMING);
+		}
+		else {
+			SendClientMessage(playerid, AB_ERROR_MESSAGE_COLOR, AB_TEXT_PENDING_OUTGOING);
+		}
 		return 0;
 	}
 
-	if(!IsPlayerConnected(inviteid) || action_button[playerid][ab_EnableInvitingYourself] == false && playerid == inviteid) 
-	{
-		SendClientMessage(playerid, AB_COLOR_ERROR_MESSAGE, AB_TEXT_INVALID_ID);
+	if(!IsPlayerConnected(inviteid) || !action_button[playerid][ab_SelfInvite] && playerid == inviteid) {
+		SendClientMessage(playerid, AB_ERROR_MESSAGE_COLOR, AB_TEXT_INVALID_ID);
     	return 0;
 	}
 
-	if(!(GetPlayerState(inviteid) >= 1 && GetPlayerState(inviteid) <= 3)) 
-	{
-		SendClientMessage(playerid, AB_COLOR_ERROR_MESSAGE, AB_TEXT_INVALID_STATE);
+	if(!(GetPlayerState(inviteid) >= 1 && GetPlayerState(inviteid) <= 3)) {
+		SendClientMessage(playerid, AB_ERROR_MESSAGE_COLOR, AB_TEXT_INVALID_STATE);
 		return 0;
 	}
 
-	if(action_button[inviteid][ab_InviteID] != INVALID_PLAYER_ID && action_button[inviteid][ab_Time] >= gettime()) 
-	{
-		SendClientMessage(playerid, AB_COLOR_ERROR_MESSAGE, AB_TEXT_ALREADY_INVITED);
+	if(action_button[inviteid][ab_InviteID] != INVALID_PLAYER_ID && action_button[inviteid][ab_ExpireTime] >= gettime()) {
+		SendClientMessage(playerid, AB_ERROR_MESSAGE_COLOR, AB_TEXT_ALREADY_INVITED);
     	return 0;
 	}
 
@@ -188,81 +156,82 @@ stock CreateActionButton(const function[], playerid, inviteid, text_creator[] = 
 
     GetPlayerPos(inviteid, x, y, z);
 
-    if(!IsPlayerInRangeOfPoint(playerid, action_button[playerid][ab_Distance], x, y, z) || 
-		GetPlayerInterior(playerid) != GetPlayerInterior(inviteid) || 
-		GetPlayerVirtualWorld(playerid) != GetPlayerVirtualWorld(inviteid)
-	) 
-	{
-		SendClientMessage(playerid, AB_COLOR_ERROR_MESSAGE, AB_TEXT_INVALID_DISTANCE);
+    if(!IsPlayerInRangeOfPoint(playerid, action_button[playerid][ab_MaxDistance], x, y, z) || GetPlayerInterior(playerid) != GetPlayerInterior(inviteid) || GetPlayerVirtualWorld(playerid) != GetPlayerVirtualWorld(inviteid)) {
+		SendClientMessage(playerid, AB_ERROR_MESSAGE_COLOR, AB_TEXT_INVALID_DISTANCE);
 		return 0;
 	}
 
-	action_button[playerid][ab_Creator] = true;
-	action_button[inviteid][ab_Invited] = true;
+	action_button[playerid][ab_IsCreator] = true;
+	action_button[inviteid][ab_IsInvited] = true;
 
 	action_button[playerid][ab_InviteID] = inviteid;
 	action_button[inviteid][ab_InviteID] = playerid;
 
-	action_button[playerid][ab_Time] = gettime() + action_button[playerid][ab_TimeTimeout];
-	action_button[inviteid][ab_Time] = gettime() + action_button[playerid][ab_TimeTimeout];
+	action_button[playerid][ab_ExpireTime] = gettime() + action_button[playerid][ab_Timeout];
+	action_button[inviteid][ab_ExpireTime] = gettime() + action_button[playerid][ab_Timeout];
 
 	format(action_button[inviteid][ab_Function], 32, "ab_%s", function);
 
-	if(accept_button == decline_button) decline_button ++;
+	if(keyAccept == keyDecline) {
+		keyDecline ++;
+	}
 
-	action_button[inviteid][ab_AcceptButton] = accept_button;
-	action_button[inviteid][ab_DeclineButton] = decline_button;
+	action_button[inviteid][ab_KeyAccept] = keyAccept;
+	action_button[inviteid][ab_KeyDecline] = keyDecline;
 
+	if(strlen(messageCreator) >= 1) {
+		SendClientMessage(playerid, AB_MESSAGE_COLOR, messageCreator);
+	}
 
-	if(strlen(text_creator) >= 1) SendClientMessage(playerid, AB_COLOR_MESSAGE, text_creator);
-
-	if(strlen(dialog_caption) >= 1)
-	{
+	if(strlen(dialogCaption) >= 1) {
 		#if defined _mdialog_included
-			Dialog_Open(inviteid, Dialog:_Button_Action_Dialog, DIALOG_STYLE_MSGBOX, dialog_caption, text_invited, dialog_button1, dialog_button2);
+			Dialog_Open(inviteid, Dialog:_Button_Action_Dialog, DIALOG_STYLE_MSGBOX, dialogCaption, messageInvited, dialogButton1, dialogButton2);
 		#else 
-			ShowPlayerDialog(inviteid, AB_DIALOG_ID, DIALOG_STYLE_MSGBOX, dialog_caption, text_invited, dialog_button1, dialog_button2);
+			ShowPlayerDialog(inviteid, AB_DIALOG_ID, DIALOG_STYLE_MSGBOX, dialogCaption, messageInvited, dialogButton1, dialogButton2);
 		#endif
 		return 1;
 	}
 
-	if(strlen(text_invited) >= 1) SendClientMessage(inviteid, AB_COLOR_MESSAGE, text_invited);
+	if(strlen(messageInvited) >= 1) {
+		SendClientMessage(inviteid, AB_MESSAGE_COLOR, messageInvited);
+	}
 
-	if(strlen(AB_TEXT_INFO) >= 1) SendClientMessage(inviteid, AB_COLOR_MESSAGE_INFO, AB_TEXT_INFO);
-	
+	if(strlen(AB_TEXT_KEY_HELP) >= 1) {
+		SendClientMessage(inviteid, AB_HELP_MESSAGE_COLOR, AB_TEXT_KEY_HELP);
+	}
 	return 1;
 }
 
 
-stock CancelActionButton(playerid)
-{
-	if(action_button[playerid][ab_InviteID] == INVALID_PLAYER_ID) return 0;
+stock CancelActionButton(playerid) {
 
 	new inviteid = action_button[playerid][ab_InviteID];
 
+	if(inviteid == INVALID_PLAYER_ID) {
+		return 0;
+	}
+
 	action_button[playerid][ab_InviteID] = INVALID_PLAYER_ID;
 	action_button[playerid][ab_Function][0] = '\0';
-	action_button[playerid][ab_Creator] = false;
-	action_button[playerid][ab_Invited] = false;
-	action_button[playerid][ab_Time] = 0;
+	action_button[playerid][ab_IsCreator] = false;
+	action_button[playerid][ab_IsInvited] = false;
+	action_button[playerid][ab_ExpireTime] = 0;
 
-	if(inviteid != INVALID_PLAYER_ID && action_button[inviteid][ab_InviteID] != INVALID_PLAYER_ID && action_button[inviteid][ab_InviteID] == playerid)
-	{
+	if(inviteid != INVALID_PLAYER_ID && action_button[inviteid][ab_InviteID] != INVALID_PLAYER_ID && action_button[inviteid][ab_InviteID] == playerid) {
 		action_button[inviteid][ab_InviteID] = INVALID_PLAYER_ID; 
 		action_button[inviteid][ab_Function][0] = '\0';
-		action_button[inviteid][ab_Creator] = false;
-		action_button[inviteid][ab_Invited] = false;
-		action_button[inviteid][ab_Time] = 0;
+		action_button[inviteid][ab_IsCreator] = false;
+		action_button[inviteid][ab_IsInvited] = false;
+		action_button[inviteid][ab_ExpireTime] = 0;
 	}
 
 	return 1;
 }
 
 
-stock GetActionButtonInviteid(playerid)
-{
-	if(action_button[playerid][ab_Creator] == true && action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID && action_button[playerid][ab_Time] >= gettime()) 
-	{
+stock GetActionButtonInviteID(playerid) {
+
+	if(action_button[playerid][ab_IsCreator] && action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID && action_button[playerid][ab_ExpireTime] >= gettime()) {
 		return action_button[playerid][ab_InviteID];
 	}
 
@@ -270,39 +239,48 @@ stock GetActionButtonInviteid(playerid)
 }
 
 
-stock SetActionButtonTime(playerid, time)
-{
-	action_button[playerid][ab_TimeTimeout] = time;
+stock SetActionButtonTimeout(playerid, timeout) {
+	action_button[playerid][ab_Timeout] = timeout;
 	return 1;
 }
 
 
-stock GetActionButtonTime(playerid)
-{
+stock GetActionButtonTimeout(playerid) {
+
 	new time;
-	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID && action_button[playerid][ab_Time] >= gettime()) 
-	{
-		time = action_button[playerid][ab_Time]-gettime();
+
+	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID && action_button[playerid][ab_ExpireTime] >= gettime()) {
+		time = action_button[playerid][ab_ExpireTime] - gettime();
 	}
-	if(time < 0) time = 0;
+
+	if(time < 0) {
+		time = 0;
+	}
 
 	return time;
 }
 
 
-stock SetActionButtonInviteYourself(playerid, bool:enable)
-{
-	action_button[playerid][ab_EnableInvitingYourself] = enable;
+stock SetActionButtonSelfInvite(playerid, bool:enable) {
+	action_button[playerid][ab_SelfInvite] = enable;
 	return 1;
 }
 
 
-stock SetActionButtonDistance(playerid, Float:distance)
-{
-	action_button[playerid][ab_Distance] = distance;
+stock IsActionButtonSelfInvite(playerid) {
+	return action_button[playerid][ab_SelfInvite];
+}
+
+
+stock SetActionButtonMaxDistance(playerid, Float:distance) {
+	action_button[playerid][ab_MaxDistance] = distance;
 	return 1;
 }
 
+
+stock Float:GetActionButtonMaxDistance(playerid) {
+	return action_button[playerid][ab_MaxDistance];
+}
 
 
 
@@ -321,11 +299,14 @@ stock SetActionButtonDistance(playerid, Float:distance)
 	{
 	#endif
 
-		if(action_button[playerid][ab_Invited] == true)
-		{
-			if(!response) return _ActionButtonResponse(playerid, action_button[playerid][ab_DeclineButton]);
+		if(action_button[playerid][ab_IsInvited]) {
+			
+			if(!response) {
+				_ActionButtonResponse(playerid, action_button[playerid][ab_KeyDecline]);
+				return 1;
+			}
 
-			_ActionButtonResponse(playerid, action_button[playerid][ab_AcceptButton]);
+			_ActionButtonResponse(playerid, action_button[playerid][ab_KeyAccept]);
 			return 1;
 		}
 	
@@ -334,9 +315,10 @@ stock SetActionButtonDistance(playerid, Float:distance)
 	#endif
 
 	#if !defined _inc_y_hooks && !defined _INC_y_hooks && defined OnDialogResponse_Button_Action
-		OnDialogResponse_Button_Action(playerid, dialogid, response, listitem, inputtext);
+		return OnDialogResponse_Button_Action(playerid, dialogid, response, listitem, inputtext);
+	#else 
+		return 1;
 	#endif
-	return 1;
 }
 
 #if !defined _mdialog_included && !defined _inc_y_hooks && !defined _INC_y_hooks
@@ -361,17 +343,18 @@ stock SetActionButtonDistance(playerid, Float:distance)
 {
 	action_button[playerid][ab_InviteID] = INVALID_PLAYER_ID; 
 	action_button[playerid][ab_Function][0] = '\0';
-	action_button[playerid][ab_Creator] = false;
-	action_button[playerid][ab_Invited] = false;
-	action_button[playerid][ab_Time] = 0;
-	action_button[playerid][ab_EnableInvitingYourself] = false;
-	action_button[playerid][ab_Distance] = AB_MAX_DISTANCE;
-	action_button[playerid][ab_TimeTimeout] = AB_INVITE_TIMEOUT_TIME;
+	action_button[playerid][ab_IsCreator] = false;
+	action_button[playerid][ab_IsInvited] = false;
+	action_button[playerid][ab_ExpireTime] = 0;
+	action_button[playerid][ab_SelfInvite] = false;
+	action_button[playerid][ab_MaxDistance] = AB_MAX_DISTANCE;
+	action_button[playerid][ab_Timeout] = AB_DEFAULT_TIMEOUT;
 
 	#if !defined _inc_y_hooks && !defined _INC_y_hooks && defined OnPlayerConnect_ActionButton
-        OnPlayerConnect_ActionButton(playerid);
+        return OnPlayerConnect_ActionButton(playerid);
+	#else 
+   		return 1;
     #endif
-    return 1;
 }
 
 #if !defined _inc_y_hooks && !defined _INC_y_hooks
@@ -393,12 +376,15 @@ stock SetActionButtonDistance(playerid, Float:distance)
 	public OnPlayerDisconnect(playerid, reason)
 #endif
 {
-	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID) CancelActionButton(playerid);
+	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID) {
+		CancelActionButton(playerid);
+	}
 
 	#if !defined _inc_y_hooks && !defined _INC_y_hooks && defined OnPlayerDisconnect_ActionButton
-        OnPlayerDisconnect_ActionButton(playerid, reason);
+        return OnPlayerDisconnect_ActionButton(playerid, reason);
+	#else 
+    	return 1;
     #endif
-    return 1;
 }
 #if !defined _inc_y_hooks && !defined _INC_y_hooks
 	#if defined _ALS_OnPlayerDisconnect
@@ -419,12 +405,15 @@ stock SetActionButtonDistance(playerid, Float:distance)
 	public OnPlayerDeath(playerid, killerid, reason)
 #endif
 {
-	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID) CancelActionButton(playerid);
+	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID) {
+		CancelActionButton(playerid);
+	}
 
     #if !defined _inc_y_hooks && !defined _INC_y_hooks && defined OnPlayerDeath_ActionButton
-        OnPlayerDeath_ActionButton(playerid, killerid, reason);
+        return OnPlayerDeath_ActionButton(playerid, killerid, reason);
+	#else 
+    	return 1;
     #endif
-    return 1;
 }
 #if !defined _inc_y_hooks && !defined _INC_y_hooks
 	#if defined _ALS_OnPlayerDeath
@@ -440,21 +429,22 @@ stock SetActionButtonDistance(playerid, Float:distance)
 
 
 #if defined _inc_y_hooks || defined _INC_y_hooks
-	hook OOnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+	hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 #else
 	public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 #endif
 {
-	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID && action_button[playerid][ab_Invited] == true && (newkeys & action_button[playerid][ab_AcceptButton] || newkeys & action_button[playerid][ab_DeclineButton]))
-	{
+	if(action_button[playerid][ab_InviteID] != INVALID_PLAYER_ID && action_button[playerid][ab_IsInvited] && 
+	  (newkeys & action_button[playerid][ab_KeyAccept] || newkeys & action_button[playerid][ab_KeyDecline])) {
 		_ActionButtonResponse(playerid, newkeys);
 		return 1;
 	}
 
 	#if !defined _inc_y_hooks && !defined _INC_y_hooks && defined OnPKeyStateC_ActionButton
-        OnPKeyStateC_ActionButton(playerid, newkeys, oldkeys);
+        return OnPKeyStateC_ActionButton(playerid, newkeys, oldkeys);
+	#else 
+   		return 1;
     #endif
-    return 1;
 }
 #if !defined _inc_y_hooks && !defined _INC_y_hooks
 	#if defined _ALS_OnPlayerKeyStateChange
@@ -469,77 +459,70 @@ stock SetActionButtonDistance(playerid, Float:distance)
 #endif
 
 
-static stock _ActionButtonResponse(playerid, newkeys)
-{
-	new inviteid = action_button[playerid][ab_InviteID], 
-		Float:x,
-		Float:y,
-		Float:z;
+static stock _ActionButtonResponse(playerid, newkeys) {
 
-	if(inviteid == INVALID_PLAYER_ID || action_button[inviteid][ab_InviteID] != playerid || !IsPlayerConnected(inviteid)) 
-	{
+	new inviteid = action_button[playerid][ab_InviteID];
+
+	if(inviteid == INVALID_PLAYER_ID || action_button[inviteid][ab_InviteID] != playerid || !IsPlayerConnected(inviteid)) {
 		CancelActionButton(playerid);
-		SendClientMessage(playerid, AB_COLOR_ERROR_MESSAGE, AB_TEXT_INVALID_ID);
+		SendClientMessage(playerid, AB_ERROR_MESSAGE_COLOR, AB_TEXT_INVALID_ID);
 		return 1;
 	}
 
-	if(action_button[playerid][ab_Time] <= gettime()) 
-	{
+	if(action_button[playerid][ab_ExpireTime] <= gettime()) {
 		CancelActionButton(playerid);
-		return SendClientMessage(playerid, AB_COLOR_ERROR_MESSAGE, AB_TEXT_TIME_OVER);
+		return SendClientMessage(playerid, AB_ERROR_MESSAGE_COLOR, AB_TEXT_TIMEOUT);
 	}
 
-	if(!(GetPlayerState(playerid) >= 1 && GetPlayerState(playerid) <= 3) || !(GetPlayerState(inviteid) >= 1 && GetPlayerState(inviteid) <= 3)) 
-	{
+	if(!(GetPlayerState(playerid) >= 1 && GetPlayerState(playerid) <= 3) || !(GetPlayerState(inviteid) >= 1 && GetPlayerState(inviteid) <= 3)) {
 		CancelActionButton(playerid);
-		return SendClientMessage(playerid, AB_COLOR_ERROR_MESSAGE, AB_TEXT_INVALID_STATE);
+		return SendClientMessage(playerid, AB_ERROR_MESSAGE_COLOR, AB_TEXT_INVALID_STATE);
 	}
+
+	new Float:x,
+		Float:y,
+		Float:z;
 
 	GetPlayerPos(inviteid, x, y, z);
 
-	if(!IsPlayerInRangeOfPoint(playerid, action_button[inviteid][ab_Distance], x, y, z) || 
-		GetPlayerInterior(playerid) != GetPlayerInterior(inviteid) || 
-		GetPlayerVirtualWorld(playerid) != GetPlayerVirtualWorld(inviteid)) 
-	{
+	if(!IsPlayerInRangeOfPoint(playerid, action_button[inviteid][ab_MaxDistance], x, y, z) || GetPlayerInterior(playerid) != GetPlayerInterior(inviteid) || GetPlayerVirtualWorld(playerid) != GetPlayerVirtualWorld(inviteid)) {
 		CancelActionButton(playerid);
-		return SendClientMessage(playerid, AB_COLOR_ERROR_MESSAGE, AB_TEXT_INVALID_DISTANCE);
+		SendClientMessage(playerid, AB_ERROR_MESSAGE_COLOR, AB_TEXT_INVALID_DISTANCE);
+		return 1;
 	}
 
-	new string[144], 
-		name[MAX_PLAYER_NAME],
-		name_invite[MAX_PLAYER_NAME];
+	new string[144];
+
+	new name[MAX_PLAYER_NAME],
+		nameInvite[MAX_PLAYER_NAME];
 
 	GetPlayerName(playerid, name, MAX_PLAYER_NAME);
-	GetPlayerName(inviteid, name_invite, MAX_PLAYER_NAME);
+	GetPlayerName(inviteid, nameInvite, MAX_PLAYER_NAME);
 
-	if(newkeys & action_button[playerid][ab_AcceptButton])
-	{
-		if(strlen(AB_TEXT_ACCEPTED) >= 1)
-		{
-			format(string, sizeof(string), AB_TEXT_ACCEPTED, name_invite);
-			SendClientMessage(playerid, AB_COLOR_MESSAGE, string);
+	if(newkeys & action_button[playerid][ab_KeyAccept]) {
+
+		if(strlen(AB_TEXT_ACCEPTED) >= 1) {
+			format(string, sizeof(string), AB_TEXT_ACCEPTED, nameInvite);
+			SendClientMessage(playerid, AB_MESSAGE_COLOR, string);
 		}
 
-		if(strlen(AB_TEXT_ACCEPTED_BY_PLAYER) >= 1)
-		{
+		if(strlen(AB_TEXT_ACCEPTED_BY_PLAYER) >= 1) {
 			format(string, sizeof(string), AB_TEXT_ACCEPTED_BY_PLAYER, name);
-			SendClientMessage(inviteid, AB_COLOR_MESSAGE, string);
+			SendClientMessage(inviteid, AB_MESSAGE_COLOR, string);
 		}
 
 		CallLocalFunction(action_button[playerid][ab_Function], "ddd", playerid, inviteid, 1);
 	}
-	else 
-	{
-		if(strlen(AB_TEXT_DECLINE) >= 1)
-		{
-			format(string, sizeof(string), AB_TEXT_DECLINE, name_invite);
-			SendClientMessage(playerid, AB_COLOR_MESSAGE, string);
+	else {
+
+		if(strlen(AB_TEXT_DECLINED) >= 1) {
+			format(string, sizeof(string), AB_TEXT_DECLINED, nameInvite);
+			SendClientMessage(playerid, AB_MESSAGE_COLOR, string);
 		}
 
-		if(strlen(AB_TEXT_DECLINE_BY_PLAYER) >= 1)
-		{
-			format(string, sizeof(string), AB_TEXT_DECLINE_BY_PLAYER, name);
-			SendClientMessage(inviteid, AB_COLOR_MESSAGE, string);
+		if(strlen(AB_TEXT_DECLINED_BY_PLAYER) >= 1) {
+			format(string, sizeof(string), AB_TEXT_DECLINED_BY_PLAYER, name);
+			SendClientMessage(inviteid, AB_MESSAGE_COLOR, string);
 		}
 
 		CallLocalFunction(action_button[playerid][ab_Function], "ddd", playerid, inviteid, 0);
